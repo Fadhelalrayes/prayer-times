@@ -4,162 +4,229 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مواقيت الصلاة وفق المذهب الجعفري</title>
+  <meta name="description" content="مواقيت الصلاة وفق المذهب الجعفري مع اختيار الدولة والمدينة والتنقل بين التواريخ.">
   <style>
-    body {
-      font-family: "Tahoma", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #1c1f26, #2d3748, #1c1f26);
-      color: #f1f1f1;
-      text-align: center;
+    :root{
+      --bg:#151a22; --panel:#1f2633; --panel-2:#242b3a; --text:#f3f5f7;
+      --muted:#a7b0c0; --acc:#ffd369; --acc-2:#56ccf2; --ok:#2ecc71; --warn:#f39c12;
+      --radius:16px;
     }
-    header {
-      background: #222831;
-      padding: 20px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #FFD369;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:"Tajawal", "Segoe UI", Tahoma, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 80% -10%, #22304a66, transparent 60%) , linear-gradient(135deg, #10151d, #151a22 45%, #10151d);
+      color:var(--text); text-align: center;
     }
-    header span {
-      font-size: 16px;
-      display: block;
-      margin-top: 5px;
-      color: #aaa;
+    header{
+      padding:26px 12px; background:#0f1420; border-bottom:1px solid #223049;
+      position:sticky; top:0; z-index:10;
     }
-    .container {
-      max-width: 800px;
-      margin: 30px auto;
-      background: #2b2d42;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    header h1{margin:0 0 6px; font-size:22px; color:var(--acc)}
+    header .by{color:var(--muted); font-size:13px}
+    .wrap{max-width:980px; margin:20px auto; padding:16px;}
+    .card{
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid #2b3b59; border-radius:var(--radius);
+      box-shadow:0 10px 24px rgba(0,0,0,.35); padding:18px;
     }
-    h2 {
-      margin-bottom: 20px;
-      color: #FFD369;
+    .row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+    select, input[type="date"], button{
+      background:#111827; color:var(--text); border:1px solid #2b3b59;
+      padding:10px 12px; border-radius:12px; font-size:15px; outline:none;
+      transition:.15s;
     }
-    select, input {
-      padding: 10px;
-      margin: 8px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 16px;
+    select:focus, input[type="date"]:focus{border-color:var(--acc)}
+    button{
+      cursor:pointer; background:#0e1a2f; border-color:#375a9e; font-weight:600;
     }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
+    button:hover{transform:translateY(-1px)}
+    .btn-ghost{background:transparent; border-color:#3c4b63}
+    .status{margin-top:10px; font-size:13px; color:var(--muted)}
+    table{width:100%; border-collapse:collapse; margin-top:18px; overflow:hidden; border-radius:12px}
+    th, td{padding:14px 10px; border-bottom:1px solid #2b3b59}
+    th{background:#0f1626; color:var(--acc)}
+    tbody tr:nth-child(odd){background:#171f2e}
+    tfoot td{color:var(--muted); font-size:13px}
+    footer{
+      margin:24px auto 40px; max-width:980px; color:var(--muted);
+      border-top:1px dashed #334; padding-top:14px; font-size:13px
     }
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #444;
-    }
-    th {
-      background: #393e46;
-      color: #FFD369;
-    }
-    td {
-      color: #f1f1f1;
-    }
-    footer {
-      margin-top: 30px;
-      padding: 15px;
-      font-size: 14px;
-      background: #222831;
-      color: #aaa;
-      border-top: 2px solid #FFD369;
-    }
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
   </style>
 </head>
 <body>
 
 <header>
-  مواقيت الصلاة وفق المذهب الجعفري
-  <span>إعداد وبرمجة: فاضل الريس</span>
+  <h1>مواقيت الصلاة وفق المذهب الجعفري</h1>
+  <div class="by">إعداد وبرمجة: فاضل الريس</div>
 </header>
 
-<div class="container">
-  <h2>اختر الدولة والمدينة</h2>
-  <select id="country">
-    <option value="iraq">العراق</option>
-    <option value="iran">إيران</option>
-    <option value="lebanon">لبنان</option>
-    <option value="bahrain">البحرين</option>
-    <option value="pakistan">باكستان</option>
-  </select>
+<div class="wrap">
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>الدولة</label><br>
+        <select id="countrySelect"></select>
+      </div>
+      <div>
+        <label>المدينة</label><br>
+        <select id="citySelect"></select>
+      </div>
+      <div>
+        <label>التاريخ</label><br>
+        <input type="date" id="datePicker">
+      </div>
+      <div style="align-self:end">
+        <button id="prevBtn" class="btn-ghost">◀ اليوم السابق</button>
+        <button id="nextBtn" class="btn-ghost">اليوم التالي ▶</button>
+        <button id="fetchBtn">عرض المواقيت</button>
+      </div>
+    </div>
+    <div class="status" id="status">جاهز</div>
 
-  <select id="city">
-    <option value="najaf">النجف</option>
-    <option value="karbala">كربلاء</option>
-    <option value="qom">قم</option>
-    <option value="beirut">بيروت</option>
-    <option value="manama">المنامة</option>
-    <option value="islamabad">إسلام آباد</option>
-  </select>
-
-  <br>
-  <label>اختر التاريخ:</label>
-  <input type="date" id="datePicker" value="">
-  <button onclick="loadTimes()">عرض المواقيت</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th>الوقت</th>
-        <th>الساعة</th>
-      </tr>
-    </thead>
-    <tbody id="timesTable">
-      <tr><td>الإمساك</td><td>-</td></tr>
-      <tr><td>الفجر</td><td>-</td></tr>
-      <tr><td>الشروق</td><td>-</td></tr>
-      <tr><td>الظهر</td><td>-</td></tr>
-      <tr><td>الغروب</td><td>-</td></tr>
-      <tr><td>المغرب</td><td>-</td></tr>
-      <tr><td>منتصف الليل</td><td>-</td></tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr><th>الوقت</th><th>الساعة (12h)</th></tr>
+      </thead>
+      <tbody id="timesBody">
+        <tr><td>الإمساك</td><td>—</td></tr>
+        <tr><td>الفجر</td><td>—</td></tr>
+        <tr><td>الشروق</td><td>—</td></tr>
+        <tr><td>صلاة الظهر</td><td>—</td></tr>
+        <tr><td>الغروب</td><td>—</td></tr>
+        <tr><td>صلاة المغرب</td><td>—</td></tr>
+        <tr><td>منتصف الليل</td><td>—</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2" id="footNote">طريقة الحساب: الجعفري (Aladhan method=0)</td></tr>
+      </tfoot>
+    </table>
+    <div class="hint">تغيير الدولة أو المدينة أو التاريخ يُحدِّث المواقيت مباشرة.</div>
+  </div>
 </div>
 
-<footer>
-  جميع الحقوق محفوظة © 2025
-</footer>
+<footer>جميع الحقوق محفوظة © 2025</footer>
 
 <script>
-  // وضع التاريخ الحالي بشكل افتراضي
-  document.getElementById("datePicker").value = new Date().toISOString().split("T")[0];
+/* ====== بيانات الدول والمدن (منسوبة لأسمائها اللاتينية لاستخدام API) ====== */
+const DATA = [
+  { key:"iraq", name:"العراق", cities:[
+      {k:"نجف", city:"Najaf"}, {k:"كربلاء", city:"Karbala"},
+      {k:"بغداد", city:"Baghdad"}, {k:"البصرة", city:"Basrah"}
+  ]},
+  { key:"iran", name:"إيران", cities:[
+      {k:"قم", city:"Qom"}, {k:"مشهد", city:"Mashhad"}, {k:"طهران", city:"Tehran"}
+  ]},
+  { key:"lebanon", name:"لبنان", cities:[
+      {k:"بيروت", city:"Beirut"}, {k:"صور", city:"Tyre"}
+  ]},
+  { key:"bahrain", name:"البحرين", cities:[
+      {k:"المنامة", city:"Manama"}
+  ]},
+  { key:"kuwait", name:"الكويت", cities:[
+      {k:"مدينة الكويت", city:"Kuwait City"}
+  ]},
+  { key:"pakistan", name:"باكستان", cities:[
+      {k:"إسلام آباد", city:"Islamabad"}, {k:"كراتشي", city:"Karachi"}
+  ]}
+];
 
-  function loadTimes() {
-    const table = document.getElementById("timesTable");
-    const today = document.getElementById("datePicker").value;
+const els = {
+  country: document.getElementById('countrySelect'),
+  city: document.getElementById('citySelect'),
+  date: document.getElementById('datePicker'),
+  body: document.getElementById('timesBody'),
+  status: document.getElementById('status'),
+  prev: document.getElementById('prevBtn'),
+  next: document.getElementById('nextBtn'),
+  fetchBtn: document.getElementById('fetchBtn')
+};
 
-    // هنا يمكنك ربط API لاحقاً (مثلاً: aladhan API أو أي مرصد شيعي)
-    // حاليا نضع أوقات تجريبية
-    const sampleTimes = {
-      "imsak": "04:15",
-      "fajr": "04:30",
-      "sunrise": "05:50",
-      "dhuhr": "12:10",
-      "sunset": "18:40",
-      "maghrib": "18:50",
-      "midnight": "23:59"
-    };
+/* ====== تعبئة القوائم ====== */
+function fillCountries(){
+  els.country.innerHTML = DATA.map(d=>`<option value="${d.key}">${d.name}</option>`).join('');
+}
+function fillCities(){
+  const obj = DATA.find(d=>d.key===els.country.value);
+  els.city.innerHTML = obj.cities.map(c=>`<option value="${c.city}">${c.k}</option>`).join('');
+}
 
-    const rows = table.querySelectorAll("tr");
-    rows[0].children[1].innerText = sampleTimes.imsak;
-    rows[1].children[1].innerText = sampleTimes.fajr;
-    rows[2].children[1].innerText = sampleTimes.sunrise;
-    rows[3].children[1].innerText = sampleTimes.dhuhr;
-    rows[4].children[1].innerText = sampleTimes.sunset;
-    rows[5].children[1].innerText = sampleTimes.maghrib;
-    rows[6].children[1].innerText = sampleTimes.midnight;
+/* ====== أدوات التاريخ ====== */
+function setToday(){
+  const today = new Date();
+  els.date.value = today.toISOString().split('T')[0];
+}
+function shiftDay(delta){
+  const d = new Date(els.date.value);
+  d.setDate(d.getDate()+delta);
+  els.date.value = d.toISOString().split('T')[0];
+}
+
+/* ====== تحويل 24h → 12h بالعربية ====== */
+function to12h(timeHHmm){
+  // يقبل "HH:mm" أو "HH:mm:ss"
+  const [H,M] = timeHHmm.split(':');
+  let h = parseInt(H,10);
+  const suf = h>=12 ? 'م' : 'ص';
+  h = h%12; if(h===0) h=12;
+  return `${h}:${M.padStart(2,'0')} ${suf}`;
+}
+
+/* ====== تحديث الجدول ====== */
+function drawTimes(t){
+  const rows = [
+    ['الإمساك', t.Imsak],
+    ['الفجر', t.Fajr],
+    ['الشروق', t.Sunrise],
+    ['صلاة الظهر', t.Dhuhr],
+    ['الغروب', t.Sunset],
+    ['صلاة المغرب', t.Maghrib],
+    ['منتصف الليل', t.Midnight]
+  ];
+  els.body.innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${to12h(r[1])}</td></tr>`).join('');
+}
+
+/* ====== جلب المواقيت من API (Aladhan) بطريقة جعفرية ====== */
+async function loadTimes(){
+  const countryObj = DATA.find(d=>d.key===els.country.value);
+  const cityLatin = els.city.value;
+  const countryLatin = countryObj.name.replace('ال',''); // لن يستخدمه API، سنملأ بالحروف اللاتينية يدويًا
+  // نحدد الدولة بالإنجليزي حسب المفتاح
+  const keyToEn = {
+    iraq:'Iraq', iran:'Iran', lebanon:'Lebanon',
+    bahrain:'Bahrain', kuwait:'Kuwait', pakistan:'Pakistan'
+  };
+  const qCountry = keyToEn[els.country.value];
+  const date = els.date.value; // YYYY-MM-DD
+
+  els.status.textContent = 'جارِ جلب المواقيت...';
+  try{
+    const url = `https://api.aladhan.com/v1/timingsByCity/${date}?city=${encodeURIComponent(cityLatin)}&country=${encodeURIComponent(qCountry)}&method=0&iso8601=true`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.code !== 200) throw new Error('تعذر الجلب');
+    const t = data.data.timings;
+    drawTimes(t);
+    els.status.textContent = `تم التحديث لـ ${cityLatin}، ${qCountry} — ${date}`;
+  }catch(err){
+    console.error(err);
+    els.status.textContent = 'حدث خطأ أثناء الجلب. تحقّق من الاتصال أو جرّب مدينة أخرى.';
   }
+}
 
-  // تحميل المواقيت عند فتح الصفحة
-  loadTimes();
+/* ====== ربط الأحداث ====== */
+els.country.addEventListener('change', ()=>{ fillCities(); loadTimes(); });
+els.city.addEventListener('change', loadTimes);
+els.date.addEventListener('change', loadTimes);
+els.prev.addEventListener('click', ()=>{ shiftDay(-1); loadTimes(); });
+els.next.addEventListener('click', ()=>{ shiftDay(+1); loadTimes(); });
+els.fetchBtn.addEventListener('click', loadTimes);
+
+/* ====== بدء التشغيل ====== */
+fillCountries();
+fillCities();
+setToday();
+loadTimes();
 </script>
-
 </body>
 </html>
