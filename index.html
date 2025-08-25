@@ -29,6 +29,10 @@
   .btn{cursor:pointer;background:#101b30;border-color:#375a9e;font-weight:700}
   .btn-ghost{background:transparent;border-color:#3c4b63}
   .status{margin:10px 2px 0;color:var(--muted);font-size:12px;text-align:center;min-height:18px}
+  .now{margin:8px 2px 0;color:#d7e3ff;text-align:center;font-weight:700}
+  .opts{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:6px;color:var(--muted);font-size:13px}
+  .switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+  .switch input{accent-color:#3eb489;transform:scale(1.2)}
   table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:12px;overflow:hidden}
   th,td{padding:14px 10px;border-bottom:1px solid #2a3959}
   th{background:#0f1626;color:var(--acc);font-size:14px}
@@ -69,10 +73,18 @@
       </div>
     </div>
 
+    <div id="now" class="now">الوقت الآن —</div>
+    <div class="opts">
+      <label class="switch">
+        <input type="checkbox" id="enableAdhan">
+        <span>تشغيل الأذان عند حلول الوقت</span>
+      </label>
+    </div>
+
     <div class="status" id="status">جاهز</div>
 
     <table>
-      <thead><tr><th>الوقت</th><th style="text-align:center">الساعة (12h)</th></tr></thead>
+      <thead><tr><th>الوقت</th><th style="text-align:center">الساعة</th></tr></thead>
       <tbody id="tbody">
         <tr data-key="Imsak"><td>الإمساك</td><td class="time">—</td></tr>
         <tr data-key="Fajr"><td>الفجر</td><td class="time">—</td></tr>
@@ -88,6 +100,9 @@
 </div>
 
 <footer>جميع الحقوق محفوظة © 2025</footer>
+
+<!-- ملف الأذان: ارفع ملف باسم adhan.mp3 في جذر المستودع أو بدّل المسار هنا -->
+<audio id="adhanAudio" src="adhan.mp3" preload="auto"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 <script>
@@ -111,38 +126,46 @@ const el = {
   show: document.getElementById('show'),
   status: document.getElementById('status'),
   tbody: document.getElementById('tbody'),
-  foot: document.getElementById('foot')
+  foot: document.getElementById('foot'),
+  now: document.getElementById('now'),
+  enableAdhan: document.getElementById('enableAdhan'),
+  adhanAudio: document.getElementById('adhanAudio')
 };
 const { DateTime } = luxon;
-let timer = null;
+let timer = null;       // عداد الشارة
+let clockTimer = null;  // ساعة الآن
 
 /* ——— أدوات ——— */
 const todayISO = () => DateTime.now().toISODate();
 const toDMY = iso => { const [y,m,d]=iso.split('-'); return `${d}-${m}-${y}`; };
 
-/* صيغة 12 ساعة مع دعم قيم ISO القادمة من API */
 function formatTime(val, zone){
   if(!val) return '—';
-  // لو القيمة ISO كاملة
   if (String(val).includes('T')){
     const dt = DateTime.fromISO(val, {zone});
     if (dt.isValid) return dt.toFormat('h:mm a').replace('AM','ص').replace('PM','م');
   }
-  // لو HH:mm
   const [hStr,m] = String(val).split(':');
   let h = parseInt(hStr,10);
   const suf = h>=12?'م':'ص';
   h = h%12 || 12;
-  return `${h}:${m.padStart(2,'0')} ${suf}`;
+  return `${h}:${String(m||'00').padStart(2,'0')} ${suf}`;
 }
 
-/* تحويل HH:mm أو ISO إلى DateTime */
 function timeToDT(val, zone, baseISO){
-  if (String(val).includes('T')){
-    return DateTime.fromISO(val, {zone});
-  }
+  if (String(val).includes('T')) return DateTime.fromISO(val, {zone});
   const [h,m] = String(val).split(':').map(Number);
   return DateTime.fromISO(baseISO, {zone}).set({hour:h, minute:m, second:0, millisecond:0});
+}
+
+/* ——— ساعة "الوقت الآن" ——— */
+function startNowClock(zone){
+  if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+  function tick(){
+    const n = DateTime.now().setZone(zone);
+    el.now.textContent = `الوقت الآن: ${n.toFormat('HH:mm:ss')}`;
+  }
+  tick(); clockTimer = setInterval(tick, 1000);
 }
 
 /* ——— تعبئة ——— */
@@ -166,7 +189,7 @@ function drawTable(t, zone){
   });
 }
 
-/* ——— شارة العدّاد لصلاة قادمة واحدة ——— */
+/* ——— شارة العدّاد + تشغيل الأذان عند حلول الوقت ——— */
 function startChip(timings, zone, iso){
   if (timer){ clearInterval(timer); timer = null; }
   const order = [
@@ -174,14 +197,10 @@ function startChip(timings, zone, iso){
     {key:'Dhuhr',label:'الظهر'},
     {key:'Maghrib',label:'المغرب'}
   ];
-  const list = order.map(p=>{
-    const dt = timeToDT(timings[p.key], zone, iso);
-    return {key:p.key, label:p.label, dt};
-  }).filter(x=>x.dt.isValid);
+  const list = order.map(p=>({key:p.key, label:p.label, dt:timeToDT(timings[p.key], zone, iso)}))
+                    .filter(x=>x.dt.isValid);
 
-  // إزالة أي شارات قديمة
   el.tbody.querySelectorAll('.chip').forEach(c=>c.remove());
-
   const now = DateTime.now().setZone(zone);
   let next = list.find(x=>x.dt > now);
   if(!next) return;
@@ -191,7 +210,15 @@ function startChip(timings, zone, iso){
 
   function tick(){
     const n = DateTime.now().setZone(zone);
-    if(n >= next.dt){ chip.textContent='حان الآن'; clearInterval(timer); return; }
+    if(n >= next.dt){
+      chip.textContent='حان الآن';
+      if (el.enableAdhan.checked){
+        // محاولة تشغيل الأذان (يتطلب تفعيل المستخدم)
+        el.adhanAudio.currentTime = 0;
+        el.adhanAudio.play().catch(()=>{ /* قد يمنع المتصفح التشغيل التلقائي */ });
+      }
+      clearInterval(timer); return;
+    }
     const {hours,minutes,seconds} = next.dt.diff(n,['hours','minutes','seconds']).toObject();
     const H = String(Math.floor(hours||0)).padStart(2,'0');
     const M = String(Math.floor(minutes||0)).padStart(2,'0');
@@ -217,6 +244,7 @@ async function loadTimes(){
 
     drawTable(j.data.timings, zone);
     startChip(j.data.timings, zone, iso);
+    startNowClock(zone);
 
     el.status.textContent = `تم التحديث: ${city}, ${country} — ${iso}`;
     el.foot.textContent   = `طريقة الحساب: الجعفري (Aladhan method=0) — المنطقة الزمنية: ${zone}`;
