@@ -4,47 +4,41 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>مواقيت الصلاة وفق المذهب الجعفري</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e1420; --panel:#1a2233; --panel2:#222e46; --txt:#f6f7fb; --muted:#aab3c5; --acc:#ffd369;
-    --radius:16px; --font:"Tajawal","Segoe UI",Tahoma,Arial;
+    --bg:#0f1420; --panel:#151c2a; --panel2:#1c2435; --txt:#f6f7fb; --muted:#aab3c5; --acc:#ffd369;
+    --radius:14px; --font:"Tajawal","Segoe UI",Tahoma,Arial;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
   body{margin:0;background:linear-gradient(135deg,var(--bg),#0b1020 45%,var(--bg));color:var(--txt);font-family:var(--font)}
-  header{position:sticky;top:0;background:#0c1120;border-bottom:1px solid #25324a;padding:18px 10px;text-align:center;z-index:5}
-  header h1{margin:0 0 6px;color:var(--acc);font-size:22px}
-  header .by{color:var(--muted);font-size:13px}
-  .wrap{max-width:1100px;margin:18px auto;padding:12px}
-  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid #2a3959;border-radius:var(--radius);box-shadow:0 10px 24px rgba(0,0,0,.35);padding:16px}
-  .controls{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px}
-  @media (max-width:900px){ .controls{grid-template-columns:repeat(2,minmax(160px,1fr));} }
-  @media (max-width:520px){ .controls{grid-template-columns:1fr;} }
-  label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
-  select,input[type="date"],input[type="text"],button{
-    width:100%;background:#0f172a;color:var(--txt);border:1px solid #2a3959;border-radius:12px;
-    padding:10px 12px;font-size:15px;outline:none
+  header{position:sticky;top:0;background:#0d1220;border-bottom:1px solid #25324a;padding:14px 10px;text-align:center;z-index:5}
+  header h1{margin:0 0 4px;color:var(--acc);font-size:20px}
+  header .by{color:var(--muted);font-size:12px}
+  .wrap{max-width:850px;margin:16px auto;padding:12px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid #2a3959;border-radius:var(--radius);box-shadow:0 8px 22px rgba(0,0,0,.35);padding:14px}
+  .controls{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px}
+  @media (max-width:780px){ .controls{grid-template-columns:repeat(2,minmax(150px,1fr));} }
+  @media (max-width:460px){ .controls{grid-template-columns:1fr;} }
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+  select,input[type="date"],button{
+    width:100%;background:#0f172a;color:var(--txt);
+    border:1px solid #2a3959;border-radius:10px;padding:9px 10px;font-size:14px;outline:none
   }
-  select:focus,input[type="date"]:focus,input[type="text"]:focus{border-color:var(--acc)}
+  select:focus,input[type="date"]:focus{border-color:var(--acc)}
   .btn{cursor:pointer;background:#101b30;border-color:#375a9e;font-weight:700}
   .btn-ghost{background:transparent;border-color:#3c4b63}
-  .pair{display:flex;gap:8px}
-  .status{margin-top:10px;color:var(--muted);font-size:13px;min-height:18px;text-align:center}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:820px){ .two-col{grid-template-columns:1fr;} }
-  .panel{background:#0f1626;border:1px dashed #334;border-radius:12px;padding:12px}
-  .panel h3{margin:0 0 10px;font-size:15px;color:var(--acc)}
-  table{width:100%;border-collapse:collapse;margin-top:16px;border-radius:12px;overflow:hidden}
-  th,td{padding:14px 10px;border-bottom:1px solid #2a3959;text-align:center}
-  th{background:#0f1626;color:var(--acc);position:sticky;top:0}
+  .status{margin:10px 2px 0;color:var(--muted);font-size:12px;text-align:center;min-height:18px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:12px;overflow:hidden}
+  th,td{padding:12px 10px;border-bottom:1px solid #2a3959}
+  th{background:#0f1626;color:var(--acc);font-size:14px}
   tbody tr:nth-child(odd){background:#171f2e}
-  tfoot td{color:var(--muted);font-size:12px}
-  .countdown-box{display:flex;flex-direction:column;align-items:center;gap:6px}
-  .countdown-label{color:var(--muted);font-size:14px}
-  .countdown{font-weight:700;font-size:28px;letter-spacing:1px;background:#0f172a;border:1px solid #376; padding:10px 14px;border-radius:12px;min-width:180px;text-align:center}
-  footer{max-width:1100px;margin:22px auto;color:var(--muted);font-size:13px;text-align:center;border-top:1px dashed #334;padding-top:10px}
+  .time{font-weight:700}
+  .chip{
+    display:inline-block; margin-inline-start:8px; padding:2px 8px; border-radius:999px;
+    font-size:12px; background:#0f172a; border:1px solid #3a596f; color:#bfe7ff;
+  }
+  footer{max-width:850px;margin:18px auto;color:var(--muted);font-size:12px;text-align:center;border-top:1px dashed #334;padding-top:8px}
 </style>
 </head>
 <body>
@@ -55,7 +49,7 @@
 
 <div class="wrap">
   <div class="card">
-    <!-- عناصر التحكم -->
+    <!-- عناصر التحكم المبسّطة -->
     <div class="controls">
       <div>
         <label>الدولة</label>
@@ -69,73 +63,48 @@
         <label>التاريخ</label>
         <input type="date" id="datePicker">
       </div>
-      <div class="pair">
-        <button id="prev" class="btn-ghost">◀ اليوم السابق</button>
-        <button id="next" class="btn-ghost">اليوم التالي ▶</button>
-      </div>
-      <div><button id="show" class="btn">عرض المواقيت</button></div>
-      <!-- إدخال يدوي (اختياري) -->
-      <div class="panel" style="grid-column: span 2">
-        <h3>City/Country إدخال يدوي (اختياري)</h3>
-        <div class="pair">
-          <input id="cityManual" type="text" placeholder="City مثال: Manama">
-          <input id="countryManual" type="text" placeholder="Country مثال: Bahrain">
-          <button id="useManual" class="btn-ghost">استخدام الإدخال اليدوي</button>
-        </div>
-        <div class="status">إن لم تجد مدينتك في القائمة—اكتبها هنا بالإنجليزية كما يكتبها Aladhan.</div>
-      </div>
-      <!-- العدّاد -->
-      <div class="panel countdown-box" style="grid-column: span 2">
-        <h3>الوقت المتبقي حتى الأذان</h3>
-        <div id="countdownLabel" class="countdown-label">—</div>
-        <div id="countdownValue" class="countdown">--:--:--</div>
+      <div style="display:flex; gap:8px; align-items:end">
+        <button id="prev" class="btn-ghost">◀</button>
+        <button id="next" class="btn-ghost">▶</button>
+        <button id="show" class="btn" style="flex:1">تحديث</button>
       </div>
     </div>
 
     <div class="status" id="status">جاهز</div>
 
-    <!-- الجدول -->
+    <!-- جدول المواقيت -->
     <table>
-      <thead><tr><th>الوقت</th><th>الساعة (12h)</th></tr></thead>
+      <thead><tr><th>الوقت</th><th style="text-align:center">الساعة (12h)</th></tr></thead>
       <tbody id="tbody">
-        <tr><td>الإمساك</td><td>—</td></tr>
-        <tr><td>الفجر</td><td>—</td></tr>
-        <tr><td>الشروق</td><td>—</td></tr>
-        <tr><td>صلاة الظهر</td><td>—</td></tr>
-        <tr><td>الغروب</td><td>—</td></tr>
-        <tr><td>صلاة المغرب</td><td>—</td></tr>
-        <tr><td>منتصف الليل</td><td>—</td></tr>
+        <tr data-key="Imsak"><td>الإمساك</td><td class="time">—</td></tr>
+        <tr data-key="Fajr"><td>الفجر</td><td class="time">—</td></tr>
+        <tr data-key="Sunrise"><td>الشروق</td><td class="time">—</td></tr>
+        <tr data-key="Dhuhr"><td>صلاة الظهر</td><td class="time">—</td></tr>
+        <tr data-key="Sunset"><td>الغروب</td><td class="time">—</td></tr>
+        <tr data-key="Maghrib"><td>صلاة المغرب</td><td class="time">—</td></tr>
+        <tr data-key="Midnight"><td>منتصف الليل</td><td class="time">—</td></tr>
       </tbody>
-      <tfoot><tr><td colspan="2">طريقة الحساب: الجعفري (Aladhan method=0) — صيغة 12 ساعة (ص/م).</td></tr></tfoot>
+      <tfoot><tr><td colspan="2" id="foot">—</td></tr></tfoot>
     </table>
   </div>
 </div>
 
 <footer>جميع الحقوق محفوظة © 2025</footer>
 
-<!-- Luxon لمعالجة المناطق الزمنية بدقة -->
+<!-- مكتبة Luxon للمنطقة الزمنية -->
 <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 <script>
-/* ===== قاعدة دول/مدن + المنطقة الزمنية (البحرين افتراضيًا) ===== */
+/* ====== دول/مدن + المنطقة الزمنية (مختصرة ومرتبة) ====== */
 const CATALOG = [
-  { tz:'Asia/Bahrain', cEN:'Bahrain',  cAR:'البحرين', cities:[{ar:'المنامة',en:'Manama'},{ar:'المحرق',en:'Muharraq'},{ar:'الرفاع',en:'Riffa'},{ar:'سترة',en:'Sitra'}]},
-  { tz:'Asia/Baghdad', cEN:'Iraq',     cAR:'العراق',  cities:[{ar:'النجف',en:'Najaf'},{ar:'كربلاء',en:'Karbala'},{ar:'الكاظمية',en:'Kadhimiyah'},{ar:'بغداد',en:'Baghdad'},{ar:'البصرة',en:'Basrah'}]},
-  { tz:'Asia/Tehran',  cEN:'Iran',     cAR:'إيران',   cities:[{ar:'قم',en:'Qom'},{ar:'مشهد',en:'Mashhad'},{ar:'طهران',en:'Tehran'},{ar:'شيراز',en:'Shiraz'}]},
-  { tz:'Asia/Beirut',  cEN:'Lebanon',  cAR:'لبنان',   cities:[{ar:'بيروت',en:'Beirut'},{ar:'صور',en:'Tyre'}]},
-  { tz:'Asia/Kuwait',  cEN:'Kuwait',   cAR:'الكويت',  cities:[{ar:'مدينة الكويت',en:'Kuwait City'},{ar:'الأحمدي',en:'Al Ahmadi'},{ar:'حولي',en:'Hawalli'}]},
-  { tz:'Asia/Karachi', cEN:'Pakistan', cAR:'باكستان', cities:[{ar:'إسلام آباد',en:'Islamabad'},{ar:'كراتشي',en:'Karachi'},{ar:'لاهور',en:'Lahore'}]},
-  { tz:'Asia/Kabul',   cEN:'Afghanistan', cAR:'أفغانستان', cities:[{ar:'كابول',en:'Kabul'},{ar:'هرات',en:'Herat'}]},
-  { tz:'Asia/Riyadh',  cEN:'Saudi Arabia', cAR:'السعودية', cities:[{ar:'القطيف',en:'Qatif'},{ar:'الأحساء',en:'Al Ahsa'},{ar:'المدينة المنورة',en:'Medina'}]},
-  { tz:'Asia/Damascus', cEN:'Syria',   cAR:'سوريا',   cities:[{ar:'دمشق',en:'Damascus'},{ar:'السيدة زينب',en:'Sayyidah Zaynab'}]},
-  { tz:'Asia/Aden',    cEN:'Yemen',    cAR:'اليمن',   cities:[{ar:'صنعاء',en:'Sanaa'},{ar:'صعدة',en:'Saada'}]},
-  { tz:'Europe/Istanbul', cEN:'Turkey', cAR:'تركيا',  cities:[{ar:'إسطنبول',en:'Istanbul'},{ar:'أنقرة',en:'Ankara'}]},
-  { tz:'Europe/London', cEN:'United Kingdom', cAR:'المملكة المتحدة', cities:[{ar:'لندن',en:'London'}]},
-  { tz:'America/Detroit', cEN:'United States', cAR:'الولايات المتحدة', cities:[{ar:'ديربورن',en:'Dearborn'},{ar:'هيوستن',en:'Houston'}]},
-  { tz:'America/Toronto', cEN:'Canada', cAR:'كندا',   cities:[{ar:'تورونتو',en:'Toronto'},{ar:'فانكوفر',en:'Vancouver'}]},
-  { tz:'Asia/Baku',     cEN:'Azerbaijan', cAR:'أذربيجان', cities:[{ar:'باكو',en:'Baku'},{ar:'نارداران',en:'Nardaran'}]},
+  { tz:'Asia/Bahrain', cEN:'Bahrain',  cAR:'البحرين',  cities:[{ar:'المنامة',en:'Manama'},{ar:'المحرق',en:'Muharraq'},{ar:'الرفاع',en:'Riffa'},{ar:'سترة',en:'Sitra'}]},
+  { tz:'Asia/Kuwait',  cEN:'Kuwait',   cAR:'الكويت',   cities:[{ar:'مدينة الكويت',en:'Kuwait City'},{ar:'الأحمدي',en:'Al Ahmadi'},{ar:'حولي',en:'Hawalli'}]},
+  { tz:'Asia/Baghdad', cEN:'Iraq',     cAR:'العراق',   cities:[{ar:'النجف',en:'Najaf'},{ar:'كربلاء',en:'Karbala'},{ar:'بغداد',en:'Baghdad'}]},
+  { tz:'Asia/Tehran',  cEN:'Iran',     cAR:'إيران',    cities:[{ar:'قم',en:'Qom'},{ar:'مشهد',en:'Mashhad'},{ar:'طهران',en:'Tehran'}]},
+  { tz:'Asia/Beirut',  cEN:'Lebanon',  cAR:'لبنان',    cities:[{ar:'بيروت',en:'Beirut'},{ar:'صور',en:'Tyre'}]},
+  { tz:'Asia/Karachi', cEN:'Pakistan', cAR:'باكستان',  cities:[{ar:'إسلام آباد',en:'Islamabad'},{ar:'كراتشي',en:'Karachi'}]},
+  { tz:'Asia/Riyadh',  cEN:'Saudi Arabia', cAR:'السعودية', cities:[{ar:'القطيف',en:'Qatif'},{ar:'الأحساء',en:'Al Ahsa'}]},
 ];
 
-/* ===== عناصر ===== */
 const el = {
   country: document.getElementById('country'),
   city: document.getElementById('city'),
@@ -143,126 +112,106 @@ const el = {
   prev: document.getElementById('prev'),
   next: document.getElementById('next'),
   show: document.getElementById('show'),
-  tbody: document.getElementById('tbody'),
   status: document.getElementById('status'),
-  cityManual: document.getElementById('cityManual'),
-  countryManual: document.getElementById('countryManual'),
-  useManual: document.getElementById('useManual'),
-  cLabel: document.getElementById('countdownLabel'),
-  cVal: document.getElementById('countdownValue')
+  tbody: document.getElementById('tbody'),
+  foot: document.getElementById('foot')
 };
-let countdownTimer = null;
-
-/* ===== أدوات مساعدة ===== */
 const { DateTime } = luxon;
-const todayISO = () => DateTime.now().toISODate();
-const toDMY = (iso) => { const [y,m,d] = iso.split('-'); return `${d}-${m}-${y}`; };
-const to12h = (s) => { const m = String(s).match(/(\d{1,2}):(\d{2})/); if(!m) return s; let h=+m[1], M=m[2]; const suf=h>=12?'م':'ص'; h=h%12||12; return `${h}:${M} ${suf}`; };
-const parseHM = (s) => { const m = String(s).match(/(\d{1,2}):(\d{2})/); return {h:+m[1],m:+m[2]}; };
-function setStatus(s){ el.status.textContent = s; }
+let timer = null;
 
-/* ===== تعبئة القوائم ===== */
+/* ===== Helpers ===== */
+const todayISO = () => DateTime.now().toISODate();
+const toDMY = iso => { const [y,m,d]=iso.split('-'); return `${d}-${m}-${y}`; };
+const to12h = s => { const m=String(s).match(/(\\d{1,2}):(\\d{2})/); if(!m) return s; let h=+m[1], M=m[2]; const suf=h>=12?'م':'ص'; h=h%12||12; return `${h}:${M} ${suf}`; };
+const hm = s => { const m=String(s).match(/(\\d{1,2}):(\\d{2})/); return {h:+m[1],m:+m[2]}; };
+
 function fillCountries(defaultEN='Bahrain'){
-  el.country.innerHTML = CATALOG.slice().sort((a,b)=>a.cAR.localeCompare(b.cAR,'ar'))
-    .map(d=>`<option value="${d.cEN}" data-tz="${d.tz}">${d.cAR}</option>`).join('');
+  el.country.innerHTML = CATALOG.map(d=>`<option value="${d.cEN}" data-tz="${d.tz}">${d.cAR}</option>`).join('');
   el.country.value = defaultEN;
 }
 function fillCities(){
   const d = CATALOG.find(x=>x.cEN===el.country.value);
   el.city.innerHTML = (d?.cities||[]).map(c=>`<option value="${c.en}">${c.ar}</option>`).join('');
 }
-function getTZ(){ return el.country.options[el.country.selectedIndex].dataset.tz || 'UTC'; }
+const tz = () => el.country.options[el.country.selectedIndex].dataset.tz || 'UTC';
 
-/* ===== عرض الجدول ===== */
-function draw(t){
-  const rows = [
-    ['الإمساك', t.Imsak], ['الفجر', t.Fajr], ['الشروق', t.Sunrise],
-    ['صلاة الظهر', t.Dhuhr], ['الغروب', t.Sunset], ['صلاة المغرب', t.Maghrib], ['منتصف الليل', t.Midnight]
-  ];
-  el.tbody.innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${to12h(r[1])}</td></tr>`).join('');
+function drawTable(t){
+  const order = ['Imsak','Fajr','Sunrise','Dhuhr','Sunset','Maghrib','Midnight'];
+  order.forEach(k=>{
+    const tr = el.tbody.querySelector(`tr[data-key="${k}"]`);
+    const td = tr.querySelector('.time');
+    td.textContent = to12h(t[k]);
+    // أزل أي شارة قديمة
+    const old = tr.querySelector('.chip'); if(old) old.remove();
+  });
 }
 
-/* ===== عدّاد الأذان القادم ===== */
-function startCountdown(timings, tz, dateISO){
-  if(countdownTimer) { clearInterval(countdownTimer); countdownTimer=null; }
+function startChip(timings, zone, dateISO){
+  if (timer) { clearInterval(timer); timer = null; }
   const PRAYERS = [
-    {key:'Fajr',    label:'أذان الفجر'},
-    {key:'Dhuhr',   label:'أذان الظهر'},
-    {key:'Maghrib', label:'أذان المغرب'},
+    {key:'Fajr', label:'الفجر'},
+    {key:'Dhuhr', label:'الظهر'},
+    {key:'Maghrib', label:'المغرب'}
   ];
-  const base = DateTime.fromISO(dateISO, {zone: tz});
-  const now = DateTime.now().setZone(tz);
-
-  // حوّل مواقيت اليوم إلى DateTime
-  const times = PRAYERS.map(p=>{
-    const {h,m} = parseHM(timings[p.key]);
-    return {label:p.label, dt: base.set({hour:h, minute:m, second:0, millisecond:0})};
-  });
-
-  // اختر التالي
-  let next = times.find(x => x.dt > now);
-  if(!next){
-    // لا يوجد أذان قادم اليوم
-    el.cLabel.textContent = 'انتهت مواقيت الأذان لليوم المختار';
-    el.cVal.textContent = '--:--:--';
-    return;
-  }
-  el.cLabel.textContent = `الوقت المتبقي حتى ${next.label}`;
+  const base = DateTime.fromISO(dateISO, {zone});
+  const now = DateTime.now().setZone(zone);
+  const list = PRAYERS.map(p=>{
+    const {h,m} = hm(timings[p.key]); return {key:p.key, label:p.label, dt: base.set({hour:h,minute:m,second:0,millisecond:0})};
+  }).filter(x=>x.dt.isValid);
+  let next = list.find(x=>x.dt > now);
+  // نظّف الشارات
+  el.tbody.querySelectorAll('.chip').forEach(c=>c.remove());
+  if(!next){ return; }
+  const targetRow = el.tbody.querySelector(`tr[data-key="${next.key}"] .time`);
+  const chip = document.createElement('span'); chip.className='chip'; chip.textContent='—';
+  targetRow.insertAdjacentElement('afterend', chip);
 
   function tick(){
-    const n = DateTime.now().setZone(tz);
-    let diff = next.dt.diff(n, ['hours','minutes','seconds']).toObject();
-    if (next.dt <= n){ clearInterval(countdownTimer); el.cVal.textContent = '00:00:00'; return; }
+    const n = DateTime.now().setZone(zone);
+    if (n >= next.dt){ chip.textContent = 'حان الآن'; clearInterval(timer); return; }
+    const diff = next.dt.diff(n, ['hours','minutes','seconds']).toObject();
     const h = String(Math.floor(diff.hours||0)).padStart(2,'0');
     const m = String(Math.floor(diff.minutes||0)).padStart(2,'0');
     const s = String(Math.floor(diff.seconds||0)).padStart(2,'0');
-    el.cVal.textContent = `${h}:${m}:${s}`;
+    chip.textContent = `متبقي ${h}:${m}:${s}`;
   }
   tick();
-  countdownTimer = setInterval(tick, 1000);
+  timer = setInterval(tick, 1000);
 }
 
-/* ===== جلب المواقيت (Aladhan + timezone) ===== */
-async function loadTimes({forceManual=false}={}){
-  const manual = forceManual || (el.cityManual.value.trim() && el.countryManual.value.trim());
-  const city = manual ? el.cityManual.value.trim() : el.city.value;
-  const country = manual ? el.countryManual.value.trim() : el.country.value;
-  const tz = manual ? getTZ() : getTZ();
-  const dateISO = el.date.value || todayISO();
-  const dateDMY = toDMY(dateISO);
-
-  if(!city || !country){ setStatus('اختر الدولة والمدينة أو اكتبها يدويًا.'); return; }
-
-  setStatus(`جارِ الجلب لـ ${city}, ${country} — ${dateISO} ...`);
+/* ===== Fetch ===== */
+async function loadTimes(){
+  const city = el.city.value;
+  const country = el.country.value;
+  const zone = tz();
+  const iso = el.date.value || todayISO();
+  const dmy = toDMY(iso);
+  el.status.textContent = `جارِ التحديث لـ ${city}, ${country} — ${iso} ...`;
   try{
-    const url = `https://api.aladhan.com/v1/timingsByCity/${dateDMY}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=0&iso8601=true&timezonestring=${encodeURIComponent(tz)}`;
-    const res = await fetch(url, {cache:'no-store'});
-    const js = await res.json();
-    if(js.code !== 200 || !js.data?.timings) throw new Error(js.data?.error || 'API error');
-    draw(js.data.timings);
-    startCountdown(js.data.timings, tz, dateISO);
-    setStatus(`تم التحديث: ${city}, ${country} — ${dateISO}`);
+    const url = `https://api.aladhan.com/v1/timingsByCity/${dmy}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=0&iso8601=true&timezonestring=${encodeURIComponent(zone)}`;
+    const r = await fetch(url, {cache:'no-store'}); const j = await r.json();
+    if (j.code !== 200 || !j.data?.timings) throw new Error('API error');
+    drawTable(j.data.timings);
+    startChip(j.data.timings, zone, iso);
+    el.status.textContent = `تم التحديث: ${city}, ${country} — ${iso}`;
+    el.foot.textContent = `طريقة الحساب: الجعفري (Aladhan method=0) — المنطقة الزمنية: ${zone}`;
   }catch(e){
-    console.error(e);
-    setStatus('تعذر جلب المواقيت. جرّب تهجئة مختلفة أو استخدم الإدخال اليدوي.');
-    if(countdownTimer) { clearInterval(countdownTimer); el.cVal.textContent='--:--:--'; el.cLabel.textContent='—'; }
+    console.error(e); el.status.textContent = 'تعذر الجلب. جرّب لاحقًا.';
+    if (timer){ clearInterval(timer); timer=null; }
   }
 }
 
-/* ===== أحداث ===== */
+/* ===== Events ===== */
 el.country.addEventListener('change', ()=>{ fillCities(); loadTimes(); });
-el.city.addEventListener('change', ()=>loadTimes());
-el.date.addEventListener('change', ()=>loadTimes());
+el.city.addEventListener('change', loadTimes);
+el.date.addEventListener('change', loadTimes);
 el.prev.addEventListener('click', ()=>{ const d=DateTime.fromISO(el.date.value||todayISO()); el.date.value=d.minus({days:1}).toISODate(); loadTimes(); });
 el.next.addEventListener('click', ()=>{ const d=DateTime.fromISO(el.date.value||todayISO()); el.date.value=d.plus({days:1}).toISODate(); loadTimes(); });
-el.show.addEventListener('click', ()=>loadTimes());
-el.useManual.addEventListener('click', ()=>loadTimes({forceManual:true}));
+el.show.addEventListener('click', loadTimes);
 
-/* ===== بدء التشغيل (البحرين افتراضيًا) ===== */
+/* ===== Init (البحرين/المنامة افتراضيًا) ===== */
 (function init(){
-  fillCountries('Bahrain');
-  fillCities();
-  el.city.value = 'Manama';
+  fillCountries('Bahrain'); fillCities(); el.city.value='Manama';
   el.date.value = todayISO();
   loadTimes();
 })();
