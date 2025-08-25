@@ -8,7 +8,8 @@
 <style>
   :root{
     --bg:#0f1420; --panel:#151c2a; --panel2:#1c2435; --txt:#f6f7fb; --muted:#aab3c5; --acc:#ffd369;
-    --radius:14px; --font:"Tajawal","Segoe UI",Tahoma,Arial;
+    --radius:16px; --font:"Tajawal","Segoe UI",Tahoma,Arial;
+    --glow1:#4e8cff; --glow2:#77ffd4;
   }
   *{box-sizing:border-box}
   body{margin:0;background:linear-gradient(135deg,var(--bg),#0b1020 45%,var(--bg));color:var(--txt);font-family:var(--font)}
@@ -29,16 +30,23 @@
   .btn{cursor:pointer;background:#101b30;border-color:#375a9e;font-weight:700}
   .btn-ghost{background:transparent;border-color:#3c4b63}
   .status{margin:10px 2px 0;color:var(--muted);font-size:12px;text-align:center;min-height:18px}
-  .now{margin:8px 2px 0;color:#d7e3ff;text-align:center;font-weight:700}
-  .opts{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:6px;color:var(--muted);font-size:13px; flex-wrap:wrap}
-  .switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
-  .switch input{accent-color:#3eb489;transform:scale(1.1)}
-  table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:12px;overflow:hidden}
+  .now{margin:8px 2px 10px;color:#d7e3ff;text-align:center;font-weight:700}
+
+  /* برواز احترافي للمواقيت */
+  .frame{position:relative;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--glow1),var(--glow2));margin-top:10px}
+  .frame-inner{background:rgba(17,24,39,.9);border-radius:17px;padding:8px}
+  .frame::before{
+    content:"";position:absolute;inset:-2px;border-radius:20px;
+    background:radial-gradient(1200px 300px at 50% -20%,rgba(119,255,212,.25),transparent 60%),
+               radial-gradient(900px 250px at 50% 120%,rgba(78,140,255,.18),transparent 60%);
+    filter:blur(14px);z-index:-1;
+  }
+
+  table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
   td{padding:14px 10px;border-bottom:1px solid #2a3959}
   tbody tr:nth-child(odd){background:#171f2e}
   .time{font-weight:700;font-size:16px;text-align:center}
   footer{max-width:820px;margin:18px auto;color:var(--muted);font-size:12px;text-align:center;border-top:1px dashed #334;padding:8px}
-  .hint{font-size:12px;color:#b3c0d9;text-align:center;margin-top:6px}
 </style>
 </head>
 <body>
@@ -69,42 +77,30 @@
       </div>
     </div>
 
-    <div class="opts">
-      <label class="switch">
-        <input type="checkbox" id="enableAdhan">
-        <span>تشغيل الأذان عند حلول الوقت</span>
-      </label>
-
-      <label class="switch" title="المزوّد: تقويم الصائغ/Aladhan">
-        <input type="checkbox" id="useSayegh">
-        <span>استخدم تقويم الصائغ (للبحرين)</span>
-      </label>
-    </div>
-
     <div id="now" class="now">الوقت الآن —</div>
     <div class="status" id="status">جاهز</div>
 
-    <table>
-      <tbody id="tbody">
-        <tr data-key="Imsak"><td>الإمساك</td><td class="time">—</td></tr>
-        <tr data-key="Fajr"><td>الفجر</td><td class="time">—</td></tr>
-        <tr data-key="Sunrise"><td>الشروق</td><td class="time">—</td></tr>
-        <tr data-key="Dhuhr"><td>صلاة الظهر</td><td class="time">—</td></tr>
-        <tr data-key="Sunset"><td>الغروب</td><td class="time">—</td></tr>
-        <tr data-key="Maghrib"><td>صلاة المغرب</td><td class="time">—</td></tr>
-        <tr data-key="Midnight"><td>منتصف الليل</td><td class="time">—</td></tr>
-      </tbody>
-    </table>
-
-    <div id="hint" class="hint" style="display:none">
-      تم اختيار "تقويم الصائغ". أضف ملف JSON: <code>data/sayegh-bh-YYYY.json</code> لعرض مواقيت البحرين بدقة.
+    <div class="frame">
+      <div class="frame-inner">
+        <table>
+          <tbody id="tbody">
+            <tr data-key="Imsak"><td>الإمساك</td><td class="time">—</td></tr>
+            <tr data-key="Fajr"><td>الفجر</td><td class="time">—</td></tr>
+            <tr data-key="Sunrise"><td>الشروق</td><td class="time">—</td></tr>
+            <tr data-key="Dhuhr"><td>صلاة الظهر</td><td class="time">—</td></tr>
+            <tr data-key="Sunset"><td>الغروب</td><td class="time">—</td></tr>
+            <tr data-key="Maghrib"><td>صلاة المغرب</td><td class="time">—</td></tr>
+            <tr data-key="Midnight"><td>منتصف الليل</td><td class="time">—</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 </div>
 
 <footer>جميع الحقوق محفوظة © 2025</footer>
 
-<audio id="adhanAudio" src="adhan.mp3" preload="auto"></audio>
 <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 <script>
 /* ——— دول/مدن + المنطقة الزمنية ——— */
@@ -124,41 +120,26 @@ const el = {
   show: document.getElementById('show'),
   status: document.getElementById('status'),
   tbody: document.getElementById('tbody'),
-  now: document.getElementById('now'),
-  enableAdhan: document.getElementById('enableAdhan'),
-  adhanAudio: document.getElementById('adhanAudio'),
-  useSayegh: document.getElementById('useSayegh'),
-  hint: document.getElementById('hint')
+  now: document.getElementById('now')
 };
 const { DateTime } = luxon;
 
-/* ——— أدوات عامة ——— */
+/* ——— أدوات ——— */
 const todayISO = () => DateTime.now().toISODate();
 const toDMY = iso => { const [y,m,d]=iso.split('-'); return `${d}-${m}-${y}`; };
 function formatTime(val, zone){
   if(!val) return '—';
-  // ISO → 12h
   if (String(val).includes('T')){
     const dt = DateTime.fromISO(val, {zone});
     if (dt.isValid) return dt.toFormat('h:mm a').replace('AM','ص').replace('PM','م');
   }
-  // HH:mm → 12h
   const [hStr,m] = String(val).split(':');
   let h = parseInt(hStr,10);
   const suf = h>=12?'م':'ص';
   h = h%12 || 12;
   return `${h}:${String(m||'00').padStart(2,'0')} ${suf}`;
 }
-function startNowClock(zone){
-  function tick(){
-    const n = DateTime.now().setZone(zone);
-    el.now.textContent = `الوقت الآن: ${n.toFormat('HH:mm:ss')}`;
-  }
-  tick(); setInterval(tick, 1000);
-}
-function tz(){
-  return el.country.options[el.country.selectedIndex].dataset.tz || 'UTC';
-}
+function tz(){ return el.country.options[el.country.selectedIndex].dataset.tz || 'UTC'; }
 function fillCountries(def='Bahrain'){
   el.country.innerHTML = CATALOG.map(d=>`<option value="${d.cEN}" data-tz="${d.tz}">${d.cAR}</option>`).join('');
   el.country.value = def;
@@ -167,8 +148,6 @@ function fillCities(){
   const d = CATALOG.find(x=>x.cEN===el.country.value);
   el.city.innerHTML = (d?.cities||[]).map(c=>`<option value="${c.en}">${c.ar}</option>`).join('');
 }
-
-/* ——— عرض الجدول ——— */
 function drawTable(t, zone){
   ['Imsak','Fajr','Sunrise','Dhuhr','Sunset','Maghrib','Midnight'].forEach(k=>{
     const tr = el.tbody.querySelector(`tr[data-key="${k}"]`);
@@ -177,7 +156,7 @@ function drawTable(t, zone){
   });
 }
 
-/* ——— مزوّد Aladhan ——— */
+/* ——— Aladhan ——— */
 async function fetchAladhan(country, city, zone, iso){
   const dmy = toDMY(iso);
   const url = `https://api.aladhan.com/v1/timingsByCity/${dmy}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=0&iso8601=true&timezonestring=${encodeURIComponent(zone)}`;
@@ -187,48 +166,17 @@ async function fetchAladhan(country, city, zone, iso){
   return j.data.timings;
 }
 
-/* ——— مزوّد Sayegh (ملف JSON محلي) ———
-  ملف لكل سنة/شهر: data/sayegh-bh-YYYY.json
-  بنية بسيطة:
-  {
-    "2025-08-24": { "Imsak":"04:23", "Fajr":"04:33", "Sunrise":"05:51", "Dhuhr":"11:41", "Sunset":"18:04", "Maghrib":"18:06", "Midnight":"23:57" },
-    "2025-08-25": { ... },
-    ...
-  }
+/* ——— تقويم الصائغ (ملف JSON محلي) ———
+   data/sayegh-bh-YYYY.json
+   { "YYYY-MM-DD": { "Imsak":"HH:mm","Fajr":"HH:mm","Sunrise":"HH:mm","Dhuhr":"HH:mm","Sunset":"HH:mm","Maghrib":"HH:mm","Midnight":"HH:mm" } }
 */
 async function fetchSayeghBahrain(iso){
   const year = iso.slice(0,4);
-  // يمكنك لاحقًا تقسيمها شهريًا (اختياري). الآن ملف واحد للسنة أسهل.
   const url = `data/sayegh-bh-${year}.json`;
   const res = await fetch(url, {cache:'no-store'});
-  if (!res.ok) throw new Error('Sayegh JSON missing');
+  if (!res.ok) return null;
   const map = await res.json();
-  // fallback لو التاريخ مو موجود بالملف
   return map[iso] || null;
-}
-
-/* ——— الأذان ——— */
-function scheduleAdhan(timings, zone, iso){
-  // نفحص كل ثانية بدون عدّاد مرئي
-  const keys = ['Fajr','Dhuhr','Maghrib'];
-  const toDT = (val)=> {
-    if (String(val).includes('T')) return DateTime.fromISO(val,{zone});
-    const [h,m]=String(val).split(':').map(Number);
-    return DateTime.fromISO(iso,{zone}).set({hour:h,minute:m,second:0,millisecond:0});
-  };
-  setInterval(()=>{
-    if(!el.enableAdhan.checked) return;
-    const now = DateTime.now().setZone(zone);
-    for(const k of keys){
-      const dt = toDT(timings[k]);
-      if (!dt.isValid) continue;
-      const diff = dt.diff(now,'seconds').seconds;
-      if (diff<=0 && diff>-1){
-        el.adhanAudio.currentTime=0;
-        el.adhanAudio.play().catch(()=>{});
-      }
-    }
-  },1000);
 }
 
 /* ——— التحميل ——— */
@@ -239,36 +187,36 @@ async function loadTimes(){
   const iso     = el.date.value || todayISO();
 
   el.status.textContent = `جارِ التحديث لـ ${city}, ${country} — ${iso} ...`;
-  el.hint.style.display = 'none';
 
   try{
     let timings = null;
 
-    if (el.useSayegh.checked && country === 'Bahrain'){
-      // نحاول قراءة ملف الصائغ المحلي
-      const t = await fetchSayeghBahrain(iso);
-      if (t){
-        timings = t;
-      }else{
-        // لم نجد التاريخ في الملف: تنبيه لطيف + رجوع مؤقت
-        el.hint.style.display = 'block';
-        el.hint.textContent = 'تم اختيار "تقويم الصائغ" ولكن لم يتم العثور على هذا التاريخ في الملف data/sayegh-bh-YYYY.json — سيتم استخدام مصدر بديل مؤقتًا.';
+    // البحرين: جرّب الصائغ أولاً، ثم ارجع لـ Aladhan عند عدم توفر التاريخ/الملف
+    if (country === 'Bahrain'){
+      timings = await fetchSayeghBahrain(iso);
+      if (!timings){
+        timings = await fetchAladhan(country, city, zone, iso);
       }
-    }
-
-    if (!timings){
-      // مصدر بديل
+    }else{
       timings = await fetchAladhan(country, city, zone, iso);
     }
 
     drawTable(timings, zone);
     el.status.textContent = `تم التحديث: ${city}, ${country} — ${iso}`;
     startNowClock(zone);
-    scheduleAdhan(timings, zone, iso);
   }catch(e){
     console.error(e);
     el.status.textContent = 'تعذر الجلب. جرّب لاحقًا.';
   }
+}
+
+/* ——— ساعة الآن (12 ساعة) ——— */
+function startNowClock(zone){
+  function tick(){
+    const n = DateTime.now().setZone(zone);
+    el.now.textContent = `الوقت الآن: ${n.toFormat('h:mm:ss a').replace('AM','ص').replace('PM','م')}`;
+  }
+  tick(); setInterval(tick, 1000);
 }
 
 /* ——— أحداث ——— */
@@ -278,14 +226,11 @@ el.date.addEventListener('change', loadTimes);
 document.getElementById('prev').addEventListener('click', ()=>{ const d=luxon.DateTime.fromISO(el.date.value||todayISO()); el.date.value=d.minus({days:1}).toISODate(); loadTimes(); });
 document.getElementById('next').addEventListener('click', ()=>{ const d=luxon.DateTime.fromISO(el.date.value||todayISO()); el.date.value=d.plus({days:1}).toISODate(); loadTimes(); });
 el.show.addEventListener('click', loadTimes);
-el.useSayegh.addEventListener('change', loadTimes);
 
 /* ——— بدء التشغيل ——— */
 (function init(){
   fillCountries('Bahrain'); fillCities(); el.city.value='Manama';
   el.date.value = todayISO();
-  // البحرين = الصائغ افتراضيًا
-  el.useSayegh.checked = true;
   loadTimes();
 })();
 </script>
