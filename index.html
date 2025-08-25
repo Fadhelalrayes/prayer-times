@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مواقيت الصلاة وفق المذهب الجعفري</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1c1f26, #2d3748, #1c1f26);
+      color: #f1f1f1;
+      text-align: center;
+    }
+    header {
+      background: #222831;
+      padding: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #FFD369;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    header span {
+      font-size: 16px;
+      display: block;
+      margin-top: 5px;
+      color: #aaa;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #2b2d42;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #FFD369;
+    }
+    select, input {
+      padding: 10px;
+      margin: 8px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #444;
+    }
+    th {
+      background: #393e46;
+      color: #FFD369;
+    }
+    td {
+      color: #f1f1f1;
+    }
+    footer {
+      margin-top: 30px;
+      padding: 15px;
+      font-size: 14px;
+      background: #222831;
+      color: #aaa;
+      border-top: 2px solid #FFD369;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  مواقيت الصلاة وفق المذهب الجعفري
+  <span>إعداد وبرمجة: فاضل الريس</span>
+</header>
+
+<div class="container">
+  <h2>اختر الدولة والمدينة</h2>
+  <select id="country">
+    <option value="iraq">العراق</option>
+    <option value="iran">إيران</option>
+    <option value="lebanon">لبنان</option>
+    <option value="bahrain">البحرين</option>
+    <option value="pakistan">باكستان</option>
+  </select>
+
+  <select id="city">
+    <option value="najaf">النجف</option>
+    <option value="karbala">كربلاء</option>
+    <option value="qom">قم</option>
+    <option value="beirut">بيروت</option>
+    <option value="manama">المنامة</option>
+    <option value="islamabad">إسلام آباد</option>
+  </select>
+
+  <br>
+  <label>اختر التاريخ:</label>
+  <input type="date" id="datePicker" value="">
+  <button onclick="loadTimes()">عرض المواقيت</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الوقت</th>
+        <th>الساعة</th>
+      </tr>
+    </thead>
+    <tbody id="timesTable">
+      <tr><td>الإمساك</td><td>-</td></tr>
+      <tr><td>الفجر</td><td>-</td></tr>
+      <tr><td>الشروق</td><td>-</td></tr>
+      <tr><td>الظهر</td><td>-</td></tr>
+      <tr><td>الغروب</td><td>-</td></tr>
+      <tr><td>المغرب</td><td>-</td></tr>
+      <tr><td>منتصف الليل</td><td>-</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  جميع الحقوق محفوظة © 2025
+</footer>
+
+<script>
+  // وضع التاريخ الحالي بشكل افتراضي
+  document.getElementById("datePicker").value = new Date().toISOString().split("T")[0];
+
+  function loadTimes() {
+    const table = document.getElementById("timesTable");
+    const today = document.getElementById("datePicker").value;
+
+    // هنا يمكنك ربط API لاحقاً (مثلاً: aladhan API أو أي مرصد شيعي)
+    // حاليا نضع أوقات تجريبية
+    const sampleTimes = {
+      "imsak": "04:15",
+      "fajr": "04:30",
+      "sunrise": "05:50",
+      "dhuhr": "12:10",
+      "sunset": "18:40",
+      "maghrib": "18:50",
+      "midnight": "23:59"
+    };
+
+    const rows = table.querySelectorAll("tr");
+    rows[0].children[1].innerText = sampleTimes.imsak;
+    rows[1].children[1].innerText = sampleTimes.fajr;
+    rows[2].children[1].innerText = sampleTimes.sunrise;
+    rows[3].children[1].innerText = sampleTimes.dhuhr;
+    rows[4].children[1].innerText = sampleTimes.sunset;
+    rows[5].children[1].innerText = sampleTimes.maghrib;
+    rows[6].children[1].innerText = sampleTimes.midnight;
+  }
+
+  // تحميل المواقيت عند فتح الصفحة
+  loadTimes();
+</script>
+
+</body>
+</html>
